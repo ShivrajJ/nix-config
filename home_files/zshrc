@@ -12,7 +12,7 @@ fi
 
 # Launch FastFetch if interactive session
 if [[ -o interactive ]]; then
-    fastfetch --config dr460nized
+    fastfetch --config dr460nized 2>/dev/null || fastfetch 2>/dev/null || true
 fi
 # Periodic auto-update on Zsh startup: 'ask' or 'no'.
 # You can manually run `z4h update` to update everything.
@@ -92,8 +92,10 @@ export GPG_TTY=$TTY
 # Source additional local files if they exist.
 z4h source ~/.env.zsh
 
-source $HOME/.config/zsh/plugins/nix-zsh-completions/nix-zsh-completions.plugin.zsh
-fpath=($HOME/.config/zsh/plugins/nix-zsh-completions $fpath)
+if [[ -f "$HOME/.config/zsh/plugins/nix-zsh-completions/nix-zsh-completions.plugin.zsh" ]]; then
+  source "$HOME/.config/zsh/plugins/nix-zsh-completions/nix-zsh-completions.plugin.zsh"
+  fpath=($HOME/.config/zsh/plugins/nix-zsh-completions $fpath)
+fi
 
 
 fpath=($HOME/.config/zsh/completions/_exercism $fpath)

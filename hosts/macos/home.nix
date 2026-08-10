@@ -25,6 +25,7 @@
     "kitty".source = ../../config/kitty;
     "wezterm".source = ../../config/wezterm;
     "btop".source = ../../config/btop;
+    "zsh".source = ../../config/zsh;
   };
 
   programs.home-manager.enable = true;
