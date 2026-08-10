@@ -22,12 +22,18 @@
     syncthing
     watchman
 
+    # Applications & Tools
+    obsidian
+    wezterm
+
     # Cloud & DevOps Tools
     awscli2
+    google-cloud-sdk
     kubernetes-helm
     opentofu
 
     # Developer Runtimes & Build Tools
+    gcc
     nodejs
     python3
     go

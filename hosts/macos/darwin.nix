@@ -35,7 +35,6 @@
     ];
     brews = [
       "cocoapods"
-      "gcc"
       "localstack/tap/localstack-cli"
     ];
     casks = [
@@ -44,14 +43,11 @@
       "db-browser-for-sqlite"
       "deskflow/tap/deskflow"
       "font-iosevka"
-      "gcloud-cli"
       "kdenlive"
       "lm-studio"
-      "obsidian"
       "pear-devs/pear/pear-desktop"
       "reactotron"
       "visual-studio-code"
-      "wezterm"
     ];
   };
 
