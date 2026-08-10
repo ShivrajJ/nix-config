@@ -123,6 +123,7 @@ compdef _directories md
 
 # Define aliases.
 alias tree='tree -a -I .git'
+alias hms='home-manager switch --flake "$HOME/.config/nix-config#shivraj@garuda" -b backup'
 
 # Add flags to existing aliases.
 alias ls="${aliases[ls]:-ls} -A"

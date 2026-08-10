@@ -5,9 +5,6 @@
   home.homeDirectory = "/home/shivraj";
   home.stateVersion = "24.05";
 
-  # Automatically back up any colliding files during switch (no -b flag needed!)
-  home.backupFileExtension = "backup";
-
   imports = [
     ../../modules/common.nix
     ../../modules/claude.nix
