@@ -24,7 +24,7 @@
 
     # Cloud & DevOps Tools
     awscli2
-    helm
+    kubernetes-helm
     opentofu
 
     # Developer Runtimes & Build Tools
