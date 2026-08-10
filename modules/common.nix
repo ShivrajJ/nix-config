@@ -3,7 +3,7 @@
 {
   # Core Packages shared across Linux & macOS
   home.packages = with pkgs; [
-    # CLI Utilities
+    # CLI Utilities & Tools
     git
     gh
     direnv
@@ -16,11 +16,26 @@
     jq
     tree
     micro
+    neovim
+    shellcheck
+    shfmt
+    syncthing
+    watchman
 
-    # Developer Runtimes / Tools
+    # Cloud & DevOps Tools
+    awscli2
+    helm
+    opentofu
+
+    # Developer Runtimes & Build Tools
     nodejs
     python3
     go
+    maven
+    gradle
+    google-java-format
+    ocaml
+    opam
   ];
 
   # Direnv integration
