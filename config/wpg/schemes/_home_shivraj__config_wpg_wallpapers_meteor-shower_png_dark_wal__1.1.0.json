@@ -1,0 +1,28 @@
+{
+    "wallpaper": "/home/shivraj/.config/wpg/wallpapers/meteor-shower.png",
+    "alpha": "60",
+
+    "special": {
+        "background": "#00141A",
+        "foreground": "#01bde2",
+        "cursor": "#01bde2"
+    },
+    "colors": {
+        "color0": "#00141A",
+        "color1": "#CB5812",
+        "color2": "#2D5C59",
+        "color3": "#BEA954",
+        "color4": "#027486",
+        "color5": "#046776",
+        "color6": "#7cc2c7",
+        "color7": "#01596A",
+        "color8": "#01394b",
+        "color9": "#ff6e08",
+        "color10": "#31807b",
+        "color11": "#ffe65b",
+        "color12": "#0197af",
+        "color13": "#01889d",
+        "color14": "#8cffff",
+        "color15": "#01bde2"
+    }
+}

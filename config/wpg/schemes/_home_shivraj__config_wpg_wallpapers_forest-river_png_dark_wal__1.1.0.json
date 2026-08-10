@@ -1,0 +1,28 @@
+{
+    "wallpaper": "/home/shivraj/.config/wpg/wallpapers/forest-river.png",
+    "alpha": "60",
+
+    "special": {
+        "background": "#041827",
+        "foreground": "#daffff",
+        "cursor": "#daffff"
+    },
+    "colors": {
+        "color0": "#041827",
+        "color1": "#566354",
+        "color2": "#44876D",
+        "color3": "#BDA466",
+        "color4": "#036F72",
+        "color5": "#5F7960",
+        "color6": "#0A928D",
+        "color7": "#a5cac4",
+        "color8": "#073455",
+        "color9": "#678c61",
+        "color10": "#4bbc90",
+        "color11": "#ffdd71",
+        "color12": "#019397",
+        "color13": "#6dab6f",
+        "color14": "#02c8c0",
+        "color15": "#daffff"
+    }
+}
