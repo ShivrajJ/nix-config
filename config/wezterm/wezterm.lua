@@ -31,19 +31,33 @@ config.mouse_bindings = {
 	},
 }
 
--- Font Settings --
+-- Default Font Settings --
 config.font_size = 12
 config.font = wezterm.font("Iosevka")
 
--- Color Settings --
--- wezterm.add_to_config_reload_watch_list(home .. "/.cache/wal/colors-wezterm.toml")
--- config.color_scheme_dirs = { home .. "/.cache/wal" }
--- config.color_scheme = "colors-wezterm"
-config.colors = require("themes.cyberdream")
--- config.window_background_opacity = 0.5
+-- macOS Specific Overrides --
+if wezterm.target_triple:find("apple-darwin", 1, true) then
+	config.font_size = 16
+	config.font = wezterm.font("Iosevka Term")
+	config.window_background_opacity = 0.85
+
+	local wal_file = io.open(home .. "/.cache/wal/colors-wezterm.toml", "r")
+	if wal_file then
+		wal_file:close()
+		wezterm.add_to_config_reload_watch_list(home .. "/.cache/wal/colors-wezterm.toml")
+		config.color_scheme_dirs = { home .. "/.cache/wal" }
+		config.color_scheme = "colors-wezterm"
+	else
+		config.colors = require("themes.cyberdream")
+	end
+else
+	-- Garuda / Hyprland default theme
+	config.colors = require("themes.cyberdream")
+end
 
 -- Miscellaneous Settings --
 config.max_fps = 120
 config.prefer_egl = true
+config.enable_kitty_keyboard = true
 
 return config

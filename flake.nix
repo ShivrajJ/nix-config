@@ -21,16 +21,19 @@
     };
 
     # 2. macOS Setup (nix-darwin + Home Manager)
-    darwinConfigurations."macbook" = darwin.lib.darwinSystem {
+    darwinConfigurations."Shivrajs-MacBook-Air" = darwin.lib.darwinSystem {
       system = "aarch64-darwin";
       modules = [
         ./hosts/macos/darwin.nix
         home-manager.darwinModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
+          home-manager.backupFileExtension = "backup";
           home-manager.users.shivraj = import ./hosts/macos/home.nix;
         }
       ];
     };
+
+    darwinConfigurations."macbook" = self.darwinConfigurations."Shivrajs-MacBook-Air";
   };
 }
