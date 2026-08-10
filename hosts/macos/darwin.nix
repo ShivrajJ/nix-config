@@ -34,28 +34,9 @@
       "pear-devs/pear"
     ];
     brews = [
-      "awscli"
       "cocoapods"
-      "dune"
       "gcc"
-      "gh"
-      "go"
-      "google-java-format"
-      "gradle"
-      "helm"
       "localstack/tap/localstack-cli"
-      "maven"
-      "neovim"
-      "node"
-      "ocaml"
-      "opam"
-      "opentofu"
-      "ripgrep"
-      "shellcheck"
-      "shfmt"
-      "syncthing"
-      "tree"
-      "watchman"
     ];
     casks = [
       "bitwarden"
