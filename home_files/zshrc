@@ -122,8 +122,14 @@ compdef _directories md
 [[ -z $z4h_win_home ]] || hash -d w=$z4h_win_home
 
 # Define aliases.
-alias tree='tree -a -I .git'
-alias hms='home-manager switch --flake "$HOME/.config/nix-config#shivraj@garuda" -b backup'
+# OS-aware Home Manager / Nix-Darwin Switch Shortcut
+hms() {
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    sudo darwin-rebuild switch --flake "$HOME/.config/nix-config#$(scutil --get LocalHostName 2>/dev/null || hostname -s)" "$@"
+  else
+    home-manager switch --flake "$HOME/.config/nix-config#shivraj@garuda" -b backup "$@"
+  fi
+}
 
 # Add flags to existing aliases.
 alias ls="${aliases[ls]:-ls} -A"
