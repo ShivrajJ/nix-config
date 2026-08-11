@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   home.username = "shivraj";
@@ -21,20 +21,20 @@
     ".gitconfig".source = ../../home_files/gitconfig;
   };
 
-  # Symlink raw dotfile configuration folders to ~/.config/
+  # Live Writable Symlinks directly to ~/.config/nix-config/config/
   xdg.configFile = {
-    "nvim".source = ../../config/nvim;
-    "hypr".source = ../../config/hypr;
-    "hyprpanel".source = ../../config/hyprpanel;
-    "walker".source = ../../config/walker;
-    "mako".source = ../../config/mako;
-    "kitty".source = ../../config/kitty;
-    "wezterm".source = ../../config/wezterm;
-    "btop".source = ../../config/btop;
-    "cava".source = ../../config/cava;
-    "wpg".source = ../../config/wpg;
-    "wal".source = ../../config/wal;
-    "easyeffects".source = ../../config/easyeffects;
+    "nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nix-config/config/nvim";
+    "hypr".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nix-config/config/hypr";
+    "hyprpanel".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nix-config/config/hyprpanel";
+    "walker".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nix-config/config/walker";
+    "mako".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nix-config/config/mako";
+    "kitty".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nix-config/config/kitty";
+    "wezterm".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nix-config/config/wezterm";
+    "btop".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nix-config/config/btop";
+    "cava".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nix-config/config/cava";
+    "wpg".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nix-config/config/wpg";
+    "wal".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nix-config/config/wal";
+    "easyeffects".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nix-config/config/easyeffects";
   };
 
   programs.home-manager.enable = true;
