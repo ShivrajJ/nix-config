@@ -12,7 +12,11 @@ fi
 
 # Launch FastFetch if interactive session
 if [[ -o interactive ]]; then
-    fastfetch --config dr460nized 2>/dev/null || fastfetch 2>/dev/null || true
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        fastfetch --structure Title:Separator:OS:Host:Kernel:Uptime:Shell:Display:WM:CPU:GPU:Memory 2>/dev/null || true
+    else
+        fastfetch --config dr460nized 2>/dev/null || fastfetch 2>/dev/null || true
+    fi
 fi
 # Periodic auto-update on Zsh startup: 'ask' or 'no'.
 # You can manually run `z4h update` to update everything.
@@ -99,7 +103,7 @@ fi
 
 
 fpath=($HOME/.config/zsh/completions/_exercism $fpath)
-autoload -U compinit && compinit
+autoload -Uz compinit && compinit -C
 
 # Define key bindings.
 z4h bindkey z4h-backward-kill-word  Ctrl+Backspace     Ctrl+H
