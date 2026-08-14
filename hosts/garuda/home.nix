@@ -5,6 +5,9 @@
   home.homeDirectory = "/home/shivraj";
   home.stateVersion = "24.05";
 
+  # Enable desktop integration on non-NixOS Linux (exposes .desktop files to launchers)
+  targets.genericLinux.enable = true;
+
   imports = [
     ../../modules/common.nix
     ../../modules/claude.nix
