@@ -8,6 +8,9 @@
   # Enable desktop integration on non-NixOS Linux (exposes .desktop files to launchers)
   targets.genericLinux.enable = true;
 
+  # Enable Syncthing background user service
+  services.syncthing.enable = true;
+
   imports = [
     ../../modules/common.nix
     ../../modules/claude.nix
