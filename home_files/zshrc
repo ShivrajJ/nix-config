@@ -9,6 +9,11 @@ if [[ -f "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]]; then
   . "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
 fi
 
+# Source Home Manager session variables (sets XDG_DATA_DIRS, PATH, etc.)
+if [[ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]]; then
+  . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+fi
+
 
 # Launch FastFetch if interactive session
 if [[ -o interactive ]]; then

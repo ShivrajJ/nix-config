@@ -59,6 +59,10 @@ hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
 hl.env("XDG_SESSION_TYPE", "wayland")
 hl.env("XDG_SESSION_DESKTOP", "Hyprland")
 
+-- Nix profile environment (Desktop entries & binaries)
+hl.env("XDG_DATA_DIRS", "/home/shivraj/.nix-profile/share:/nix/var/nix/profiles/default/share:" .. (os.getenv("XDG_DATA_DIRS") or "/usr/local/share:/usr/share"))
+hl.env("PATH", "/home/shivraj/.nix-profile/bin:/nix/var/nix/profiles/default/bin:" .. (os.getenv("PATH") or "/usr/local/bin:/usr/bin:/bin"))
+
 -- Colors & Appearance
 hl.env("COLOR_BACKEND", "colorthief")
 
@@ -404,7 +408,7 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("systemctl --user start hyprpolkitagent") -- auth agent
 	hl.exec_cmd("sleep 1 && ~/.config/hypr/scripts/dynamic-borders.sh") -- script for removing borders from single windows
 	hl.exec_cmd("kdeconnect-indicator") -- KDE Connect
-	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP") -- screen sharing XDG stuff
+	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_DATA_DIRS PATH") -- screen sharing & XDG environment
 end)
 
 -- Ambxst
