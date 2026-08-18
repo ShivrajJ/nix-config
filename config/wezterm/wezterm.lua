@@ -57,7 +57,7 @@ end
 
 -- Miscellaneous Settings --
 config.max_fps = 120
-config.prefer_egl = true
+config.front_end = "WebGpu"
 config.enable_kitty_keyboard = true
 
 return config
