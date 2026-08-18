@@ -2,6 +2,7 @@
 
 let
   wezterm = inputs.wezterm.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  ghostty = if pkgs.stdenv.isDarwin then pkgs.ghostty-bin else pkgs.ghostty;
 in
 {
   # Core Packages shared across Linux & macOS
@@ -46,6 +47,8 @@ in
     google-java-format
     ocaml
     opam
+  ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
+    ghostty
   ];
 
   # Direnv integration

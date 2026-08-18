@@ -24,6 +24,7 @@
     "nvim".source = ../../config/nvim;
     "kitty".source = ../../config/kitty;
     "wezterm".source = ../../config/wezterm;
+    "ghostty".source = ../../config/ghostty;
     "btop".source = ../../config/btop;
     "zsh".source = ../../config/zsh;
   };
