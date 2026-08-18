@@ -19,6 +19,8 @@ fi
 if [[ -o interactive ]]; then
     if [[ "$OSTYPE" == "darwin"* ]]; then
         fastfetch --structure Title:Separator:OS:Host:Kernel:Uptime:Shell:Display:WM:CPU:GPU:Memory 2>/dev/null || true
+    elif [[ -n "$ZELLIJ" ]]; then
+        fastfetch --config dr460nized --logo "$HOME/.config/nix-config/config/fastfetch/garuda-dragon-ascii.txt" --logo-type file 2>/dev/null || fastfetch 2>/dev/null || true
     else
         fastfetch --config dr460nized 2>/dev/null || fastfetch 2>/dev/null || true
     fi

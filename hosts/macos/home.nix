@@ -25,6 +25,7 @@
     "kitty".source = ../../config/kitty;
     "wezterm".source = ../../config/wezterm;
     "ghostty".source = ../../config/ghostty;
+    "zellij".source = ../../config/zellij;
     "btop".source = ../../config/btop;
     "zsh".source = ../../config/zsh;
   };

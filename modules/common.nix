@@ -15,6 +15,7 @@ in
     fzf
     btop
     fastfetch
+    chafa
     ripgrep
     fd
     jq
@@ -25,6 +26,7 @@ in
     shfmt
     syncthing
     watchman
+    zellij
 
     # Applications & Tools
     obsidian

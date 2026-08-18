@@ -1,0 +1,31 @@
+// Zellij Configuration File
+// Documentation: https://zellij.dev/documentation/
+
+// --- General Settings ---
+theme "cyberdream-kanagawa"
+mouse_mode true
+copy_on_select true
+pane_frames true
+auto_layout true
+
+// --- Themes ---
+themes {
+    cyberdream-kanagawa {
+        fg "#ffffff"
+        bg "#16161e"
+        black "#1e222a"
+        red "#ff5d62"
+        green "#7e9cd8"
+        yellow "#ff9e3b"
+        blue "#7ea9a7"
+        magenta "#b57edc"
+        cyan "#657b83"
+        white "#ffffff"
+        orange "#ff9e3b"
+    }
+}
+
+// --- Keybindings & UI Defaults ---
+// Default Mode: normal
+default_mode "normal"
+simplified_ui false

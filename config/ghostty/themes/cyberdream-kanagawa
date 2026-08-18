@@ -1,0 +1,25 @@
+# Cyberdream Kanagawa Theme for Ghostty
+
+background = #16161e
+foreground = #ffffff
+cursor-color = #ffffff
+cursor-text = #16161e
+selection-background = #2c3245
+selection-foreground = #ffffff
+
+palette = 0=#1e222a
+palette = 1=#ff5d62
+palette = 2=#7e9cd8
+palette = 3=#ff9e3b
+palette = 4=#7ea9a7
+palette = 5=#b57edc
+palette = 6=#657b83
+palette = 7=#ffffff
+palette = 8=#2c3245
+palette = 9=#ff5d62
+palette = 10=#7e9cd8
+palette = 11=#ff9e3b
+palette = 12=#7ea9a7
+palette = 13=#b57edc
+palette = 14=#657b83
+palette = 15=#ffffff
