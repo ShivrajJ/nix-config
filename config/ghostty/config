@@ -1,0 +1,26 @@
+# Ghostty Configuration
+
+# Font Settings
+font-family = "Iosevka"
+font-size = 12
+
+# Color Theme
+theme = cyberdream
+
+# Window Geometry & Padding
+window-width = 120
+window-height = 28
+window-padding-x = 0
+window-padding-y = 0
+window-padding-balance = true
+
+# Mouse & Scrolling
+mouse-scroll-multiplier = 1
+
+# Cursor
+cursor-style = block
+cursor-style-blink = false
+
+# Window Decoration & UI
+window-decoration = auto
+gtk-titlebar = false

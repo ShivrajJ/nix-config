@@ -1,23 +1,7 @@
 { pkgs, inputs, ... }:
 
 let
-  weztermPkg = inputs.wezterm.packages.${pkgs.stdenv.hostPlatform.system}.default;
-  # On Linux (non-NixOS), wrap wezterm so it can access host OpenGL/EGL/Vulkan drivers in /usr/lib
-  wezterm = if pkgs.stdenv.isLinux then
-    pkgs.symlinkJoin {
-      name = "wezterm-wrapped";
-      paths = [ weztermPkg ];
-      buildInputs = [ pkgs.makeWrapper ];
-      postBuild = ''
-        for bin in $out/bin/*; do
-          if [ -x "$bin" ]; then
-            wrapProgram "$bin" --prefix LD_LIBRARY_PATH : "/usr/lib:/usr/lib32"
-          fi
-        done
-      '';
-    }
-  else
-    weztermPkg;
+  wezterm = inputs.wezterm.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
 {
   # Core Packages shared across Linux & macOS
@@ -44,6 +28,7 @@ in
     # Applications & Tools
     obsidian
     wezterm
+    ghostty
 
     # Cloud & DevOps Tools
     awscli2

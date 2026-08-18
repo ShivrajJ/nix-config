@@ -5,6 +5,7 @@ local config = wezterm.config_builder()
 
 -- Window Settings --
 config.hide_tab_bar_if_only_one_tab = true
+config.tab_bar_at_bottom = true
 config.window_padding = {
 	left = 0,
 	right = 0,

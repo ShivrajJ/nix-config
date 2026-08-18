@@ -43,7 +43,7 @@ hl.config({
 -- See https://wiki.hyprland.org/Configuring/Keywords/
 
 -- Set programs that you use
-local terminal = "wezterm"
+local terminal = "ghostty"
 local fileManager = "dolphin"
 local runner = "walker"
 local browser = "firefox"
@@ -60,8 +60,16 @@ hl.env("XDG_SESSION_TYPE", "wayland")
 hl.env("XDG_SESSION_DESKTOP", "Hyprland")
 
 -- Nix profile environment (Desktop entries & binaries)
-hl.env("XDG_DATA_DIRS", "/home/shivraj/.nix-profile/share:/nix/var/nix/profiles/default/share:" .. (os.getenv("XDG_DATA_DIRS") or "/usr/local/share:/usr/share"))
-hl.env("PATH", "/home/shivraj/.nix-profile/bin:/nix/var/nix/profiles/default/bin:" .. (os.getenv("PATH") or "/usr/local/bin:/usr/bin:/bin"))
+hl.env(
+	"XDG_DATA_DIRS",
+	"/home/shivraj/.nix-profile/share:/nix/var/nix/profiles/default/share:"
+		.. (os.getenv("XDG_DATA_DIRS") or "/usr/local/share:/usr/share")
+)
+hl.env(
+	"PATH",
+	"/home/shivraj/.nix-profile/bin:/nix/var/nix/profiles/default/bin:"
+		.. (os.getenv("PATH") or "/usr/local/bin:/usr/bin:/bin")
+)
 
 -- Colors & Appearance
 hl.env("COLOR_BACKEND", "colorthief")
@@ -319,7 +327,7 @@ hl.bind(mainMod .. " + " .. "mouse:273", hl.dsp.window.resize(), { mouse = true 
 hl.window_rule({
 	name = "terminal_blur",
 	match = {
-		class = "^(org\\.wezfurlong\\.wezterm|kitty)$",
+		class = "^(org\\.wezfurlong\\.wezterm|kitty|com\\.mitchellh\\.ghostty)$",
 	},
 	opacity = "0.85 override 0.5 override",
 })
