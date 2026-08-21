@@ -10,6 +10,22 @@
   xdg.enable = true;
   xdg.mimeApps.enable = true;
 
+  xdg.desktopEntries.zellij = {
+    name = "Zellij";
+    genericName = "Terminal Workspace";
+    comment = "A terminal multiplexer and workspace with batteries included";
+    exec = "ghostty -e zellij attach --create main";
+    icon = "utilities-terminal";
+    terminal = false;
+    categories = [ "System" "Utility" "Development" ];
+    actions = {
+      "new-session" = {
+        name = "New Session";
+        exec = "ghostty -e zellij";
+      };
+    };
+  };
+
   # Enable Syncthing background user service
   services.syncthing.enable = true;
 
@@ -45,6 +61,7 @@
     "wpg".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nix-config/config/wpg";
     "wal".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nix-config/config/wal";
     "easyeffects".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nix-config/config/easyeffects";
+    "noctalia".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nix-config/config/noctalia";
   };
 
   programs.home-manager.enable = true;

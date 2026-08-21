@@ -233,6 +233,7 @@ hl.bind(mainMod .. " + " .. "B", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + " .. "ESCAPE", hl.dsp.window.close())
 hl.bind(mainMod .. " + " .. "M", hl.dsp.exit())
 hl.bind(mainMod .. " + " .. "E", hl.dsp.exec_cmd(fileManager))
+hl.bind(mainMod .. " + " .. "Z", hl.dsp.exec_cmd("ghostty -e zellij attach --create main"))
 hl.bind(mainMod .. " + " .. "CTRL" .. " + " .. "V", hl.dsp.window.float())
 hl.bind(mainMod .. " + " .. "R", hl.dsp.exec_cmd(runner))
 
@@ -288,8 +289,8 @@ hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. 0, hl.dsp.window.move({ workspac
 -- hl.bind(mainMod .. " + " .. "mouse_up", hl.dsp.focus({ workspace = "e-1" }))
 
 -- Alt+Tab Scrolling through workspaces
-hl.bind("ALT" .. " + " .. "TAB", hl.dsp.focus({ workspace = "e+1" }))
-hl.bind("ALT + SHIFT" .. " + " .. "TAB", hl.dsp.focus({ workspace = "e-1" }))
+-- hl.bind("ALT" .. " + " .. "TAB", hl.dsp.focus({ workspace = "e+1" }))
+-- hl.bind("ALT + SHIFT" .. " + " .. "TAB", hl.dsp.focus({ workspace = "e-1" }))
 
 -- Move/resize windows with mainMod + LMB/RMB and dragging
 hl.bind(mainMod .. " + " .. "mouse:272", hl.dsp.window.drag(), { mouse = true })
@@ -419,9 +420,15 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_DATA_DIRS PATH") -- screen sharing & XDG environment
 end)
 
--- Ambxst
-loadfile(os.getenv("HOME") .. "/.local/share/ambxst/hyprland.lua")()
+-- Ambxst (temporarily disabled to test Noctalia)
+-- loadfile(os.getenv("HOME") .. "/.local/share/ambxst/hyprland.lua")()
+
+-- Noctalia Shell
+loadfile(os.getenv("HOME") .. "/.config/hypr/noctalia_hyprland.lua")()
 
 -- OVERRIDES
--- Down here you can write or source anything that you want to override from Ambxst's settings.
+-- Down here you can write or source anything that you want to override from shell settings.
 hl.window_rule({ name = "browser_starting_width", match = { class = "firefox" }, scrolling_width = 1.0 })
+
+-- For Noctalia Color templates
+require("noctalia").apply_theme()

@@ -47,7 +47,7 @@ if wezterm.target_triple:find("apple-darwin", 1, true) then
 		wal_file:close()
 		wezterm.add_to_config_reload_watch_list(home .. "/.cache/wal/colors-wezterm.toml")
 		config.color_scheme_dirs = { home .. "/.cache/wal" }
-		config.color_scheme = "colors-wezterm"
+		config.color_scheme = "Noctalia"
 	else
 		config.colors = require("themes.cyberdream")
 	end

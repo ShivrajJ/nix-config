@@ -51,6 +51,7 @@ in
     opam
   ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
     ghostty
+    noctalia
   ];
 
   # Direnv integration
