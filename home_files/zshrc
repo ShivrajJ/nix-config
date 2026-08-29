@@ -99,6 +99,7 @@ export GODOT_BIN="${HOME}/Work/Tools/Game Engines/Godot/Godot_v4.6-stable_mono_l
 
 # Export environment variables.
 export GPG_TTY=$TTY
+export PROTONPATH="GE-Proton"
 
 # Source additional local files if they exist.
 z4h source ~/.env.zsh

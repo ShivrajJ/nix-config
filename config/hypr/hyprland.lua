@@ -414,7 +414,7 @@ hl.on("hyprland.start", function()
 	--	hl.exec_cmd("swww-daemon")
 	--	hl.exec_cmd("/home/shivraj/scripts/swww_randomizer.sh " .. wallpapers)
 	--	hl.exec_cmd("walker --gapplication-service") -- app-launcher
-	hl.exec_cmd("systemctl --user start hyprpolkitagent") -- auth agent
+	-- hl.exec_cmd("systemctl --user start hyprpolkitagent") -- auth agent
 	hl.exec_cmd("sleep 1 && ~/.config/hypr/scripts/dynamic-borders.sh") -- script for removing borders from single windows
 	hl.exec_cmd("kdeconnect-indicator") -- KDE Connect
 	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_DATA_DIRS PATH") -- screen sharing & XDG environment

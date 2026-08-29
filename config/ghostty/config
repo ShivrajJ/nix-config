@@ -24,3 +24,7 @@ cursor-style-blink = false
 # Window Decoration & UI
 window-decoration = auto
 gtk-titlebar = false
+
+# Shell Integration
+shell-integration-features = sudo
+
