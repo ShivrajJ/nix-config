@@ -48,7 +48,6 @@ in
     ocaml
     opam
   ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
-    ghostty
     noctalia
   ];
 
