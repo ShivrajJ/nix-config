@@ -31,6 +31,14 @@ hl.monitor({
 	scale = desktopScale,
 })
 
+hl.monitor({
+	output = "HDMI-A-2",
+	mode = "3840x2160@120.00",
+	-- mode = "1920x1080@48.01",
+	position = "0x0",
+	scale = desktopScale * 2,
+})
+
 hl.config({
 	xwayland = {
 		force_zero_scaling = true,
