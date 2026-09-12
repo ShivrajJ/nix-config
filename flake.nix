@@ -1,15 +1,6 @@
 {
   description = "Cross-Platform Nix Dotfiles (Garuda Linux & macOS)";
 
-  nixConfig = {
-    extra-substituters = [
-      "https://wezterm.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "wezterm.cachix.org-1:kAbhjYUC9qvblTE+s7S+kl5XM1zVa4skO+E/1IDWdH0="
-    ];
-  };
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
@@ -19,9 +10,6 @@
     darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    wezterm = {
-      url = "github:wez/wezterm?dir=nix";
     };
   };
 
@@ -50,5 +38,12 @@
     };
 
     darwinConfigurations."macbook" = self.darwinConfigurations."Shivrajs-MacBook-Air";
+
+    # 3. CachyOS Linux Setup (Standalone Home Manager)
+    homeConfigurations."shivraj@Hades" = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages."x86_64-linux";
+      extraSpecialArgs = { inherit inputs; };
+      modules = [ ./hosts/Hades/home.nix ];
+    };
   };
 }

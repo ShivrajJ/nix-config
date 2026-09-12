@@ -1,7 +1,6 @@
 { pkgs, inputs, ... }:
 
 let
-  wezterm = inputs.wezterm.packages.${pkgs.stdenv.hostPlatform.system}.default;
   ghostty = if pkgs.stdenv.isDarwin then pkgs.ghostty-bin else pkgs.ghostty;
 in
 {
@@ -30,7 +29,6 @@ in
 
     # Applications & Tools
     obsidian
-    wezterm
     ghostty
 
     # Cloud & DevOps Tools
