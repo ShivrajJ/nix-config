@@ -47,8 +47,6 @@ in
     google-java-format
     ocaml
     opam
-  ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
-    noctalia
   ];
 
   # Direnv integration

@@ -31,7 +31,13 @@
 
   imports = [
     ../../modules/common.nix
+    ../../modules/linux.nix
     ../../modules/claude.nix
+  ];
+
+  # Host-specific packages (Garuda)
+  home.packages = with pkgs; [
+    # Add Garuda-specific packages here
   ];
 
   nixpkgs.config.allowUnfree = true;

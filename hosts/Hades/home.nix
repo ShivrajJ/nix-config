@@ -31,7 +31,13 @@
 
   imports = [
     ../../modules/common.nix
+    ../../modules/linux.nix
     ../../modules/claude.nix
+  ];
+
+  # Host-specific packages (Hades)
+  home.packages = with pkgs; [
+    # Add Hades-specific packages here
   ];
 
   nixpkgs.config.allowUnfree = true;
