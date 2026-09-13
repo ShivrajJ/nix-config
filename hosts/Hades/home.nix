@@ -8,7 +8,11 @@
   # Enable desktop integration on non-NixOS Linux (exposes .desktop files to launchers)
   targets.genericLinux.enable = true;
   xdg.enable = true;
-  xdg.mimeApps.enable = true;
+  xdg.mimeApps.enable = false;
+
+  home.sessionVariables = {
+    TERMINAL = "ghostty";
+  };
 
   xdg.desktopEntries.zellij = {
     name = "Zellij";
