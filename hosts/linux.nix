@@ -78,22 +78,29 @@ in
     "fastfetch".source = live "config/fastfetch";
     "zsh/plugins".source = live "config/zsh/plugins";
     "zsh/completions".source = live "config/zsh/completions";
+
+    # Hyprland's static files stay live so edits apply immediately. The
+    # directory itself is real because Noctalia writes noctalia.lua into it.
+    "hypr/hyprland.lua".source = live "config/hypr/hyprland.lua";
+    "hypr/noctalia_hyprland.lua".source = live "config/hypr/noctalia_hyprland.lua";
+    "hypr/scripts/dynamic-borders.sh".source = live "config/hypr/scripts/dynamic-borders.sh";
   };
 
-  # Hyprland, Noctalia, and btop write into their config directories, so they
-  # must not be live links into the repo. Static Hyprland files are refreshed
-  # on every activation; generated/user-owned files are seeded once.
-  home.activation.seedWritableConfigs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    set -eu
-
+  # On the first switch the old ~/.config/hypr directory may still be a symlink
+  # into the repo. Remove it before Home Manager tries to create the per-file
+  # links, otherwise they would be written through the old directory link.
+  home.activation.removeOldHyprLink = lib.hm.dag.entryBefore [ "linkGeneration" ] ''
     if [ -L "$HOME/.config/hypr" ]; then
       rm "$HOME/.config/hypr"
     fi
-    mkdir -p "$HOME/.config/hypr/scripts"
-    cp -f ${../config/hypr/hyprland.lua} "$HOME/.config/hypr/hyprland.lua"
-    cp -f ${../config/hypr/noctalia_hyprland.lua} "$HOME/.config/hypr/noctalia_hyprland.lua"
-    cp -f ${../config/hypr/scripts/dynamic-borders.sh} "$HOME/.config/hypr/scripts/dynamic-borders.sh"
-    chmod +x "$HOME/.config/hypr/scripts/dynamic-borders.sh"
+  '';
+
+  # Noctalia and btop write into their config directories, so they must not be
+  # live links into the repo. Seed their configs once, then leave them alone.
+  home.activation.seedWritableConfigs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    set -eu
+
+    mkdir -p "$HOME/.config/hypr"
     if [ ! -e "$HOME/.config/hypr/noctalia.lua" ]; then
       cp -f ${../config/hypr/noctalia.lua} "$HOME/.config/hypr/noctalia.lua"
     fi
