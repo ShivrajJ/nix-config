@@ -1,10 +1,10 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 
 let
-  ghostty = if pkgs.stdenv.isDarwin then pkgs.ghostty-bin else pkgs.ghostty;
+  ghostty = if pkgs.stdenv.hostPlatform.isDarwin then pkgs.ghostty-bin else pkgs.ghostty;
 in
 {
-  # Core Packages shared across Linux & macOS
+  # Core CLI and GUI packages shared across Linux & macOS.
   home.packages = with pkgs; [
     # CLI Utilities & Tools
     git
@@ -30,23 +30,6 @@ in
     # Applications & Tools
     obsidian
     ghostty
-
-    # Cloud & DevOps Tools
-    awscli2
-    google-cloud-sdk
-    kubernetes-helm
-    opentofu
-
-    # Developer Runtimes & Build Tools
-    gcc
-    nodejs
-    python3
-    go
-    maven
-    gradle
-    google-java-format
-    ocaml
-    opam
   ];
 
   # Direnv integration

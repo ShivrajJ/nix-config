@@ -1,6 +1,6 @@
 # Personal Zsh configuration file. It is strongly recommended to keep all
 # shell customization and configuration (including exported environment
-# variables such as PATH) in this file or in files sourced from it.
+# variables and PATH) in this file or in files sourced from it.
 #
 # Documentation: https://github.com/romkatv/zsh4humans/blob/v5/README.md.
 
@@ -14,17 +14,17 @@ if [[ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]]; then
   . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
 fi
 
-
 # Launch FastFetch if interactive session
 if [[ -o interactive ]]; then
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        fastfetch --structure Title:Separator:OS:Host:Kernel:Uptime:Shell:Display:WM:CPU:GPU:Memory 2>/dev/null || true
-    elif [[ -n "$ZELLIJ" ]]; then
-        fastfetch --config dr460nized --logo "$HOME/.config/nix-config/config/fastfetch/garuda-dragon-ascii.txt" --logo-type file 2>/dev/null || fastfetch 2>/dev/null || true
-    else
-        fastfetch --config dr460nized 2>/dev/null || fastfetch 2>/dev/null || true
-    fi
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    fastfetch --structure Title:Separator:OS:Host:Kernel:Uptime:Shell:Display:WM:CPU:GPU:Memory 2>/dev/null || true
+  elif [[ -n "$ZELLIJ" ]]; then
+    fastfetch --config dr460nized --logo "$HOME/.config/fastfetch/garuda-dragon-ascii.txt" --logo-type file 2>/dev/null || fastfetch 2>/dev/null || true
+  else
+    fastfetch --config dr460nized 2>/dev/null || fastfetch 2>/dev/null || true
+  fi
 fi
+
 # Periodic auto-update on Zsh startup: 'ask' or 'no'.
 # You can manually run `z4h update` to update everything.
 zstyle ':z4h:' auto-update      'no'
@@ -50,7 +50,7 @@ zstyle ':z4h:autosuggestions' forward-char 'accept'
 # Recursively traverse directories when TAB-completing files.
 zstyle ':z4h:fzf-complete' recurse-dirs 'no'
 
-# Enable direnv to automatically source .envrc files.
+# Enable direnv to automatically source .envrc files (z4h owns the hook).
 zstyle ':z4h:direnv'         enable 'yes'
 # Show "loading" and "unloading" notifications from direnv.
 zstyle ':z4h:direnv:success' notify 'yes'
@@ -79,38 +79,38 @@ z4h install ohmyzsh/ohmyzsh || return
 # perform network I/O must be done above. Everything else is best done below.
 z4h init || return
 
-
-# Hook direnv into zsh
-eval "$(direnv hook zsh)"
-
 # Extend PATH.
 path=(~/bin $path)
-export PATH=$PATH:/usr/local/go/bin
-export PATH=$PATH:${HOME}/go/bin
-export PATH=$PATH:${HOME}/Apps/PyCharm/pycharm-community-2024.3.1.1/bin
-export PATH=$PATH:${HOME}/Apps/IntelliJ\ IDEA/idea-IC-243.24978.46/bin
-export PATH=$PATH:${HOME}/.cargo/bin
-export PATH=$PATH:/opt/android-sdk/platform-tools
-
+if [[ "$OSTYPE" == linux* ]]; then
+  path+=(/usr/local/go/bin "$HOME/go/bin")
+  [[ -d "$HOME/Apps/PyCharm/pycharm-community-2024.3.1.1/bin" ]] && path+=("$HOME/Apps/PyCharm/pycharm-community-2024.3.1.1/bin")
+  [[ -d "$HOME/Apps/IntelliJ IDEA/idea-IC-243.24978.46/bin" ]] && path+=("$HOME/Apps/IntelliJ IDEA/idea-IC-243.24978.46/bin")
+fi
+[[ -d "$HOME/.cargo/bin" ]] && path+=("$HOME/.cargo/bin")
+[[ -d /opt/android-sdk/platform-tools ]] && path+=(/opt/android-sdk/platform-tools)
+[[ -d "$HOME/.opencode/bin" ]] && path+=("$HOME/.opencode/bin")
+[[ -d "$HOME/.local/bin" ]] && path+=("$HOME/.local/bin")
+export PATH
 
 # export JAVA_HOME=/  # Managed by SDKMAN below
 
-export GODOT_BIN="${HOME}/Work/Tools/Game Engines/Godot/Godot_v4.6-stable_mono_linux_x86_64/Godot_v4.6-stable_mono_linux.x86_64"
+if [[ "$OSTYPE" == linux* ]]; then
+  export GODOT_BIN="${HOME}/Work/Tools/Game Engines/Godot/Godot_v4.6-stable_mono_linux_x86_64/Godot_v4.6-stable_mono_linux.x86_64"
+  export PROTONPATH="GE-Proton"
+fi
 
 # Export environment variables.
-export GPG_TTY=$TTY
-export PROTONPATH="GE-Proton"
+export GPG_TTY=$(tty 2>/dev/null || true)
 
 # Source additional local files if they exist.
 z4h source ~/.env.zsh
 
 if [[ -f "$HOME/.config/zsh/plugins/nix-zsh-completions/nix-zsh-completions.plugin.zsh" ]]; then
   source "$HOME/.config/zsh/plugins/nix-zsh-completions/nix-zsh-completions.plugin.zsh"
-  fpath=($HOME/.config/zsh/plugins/nix-zsh-completions $fpath)
+  fpath=("$HOME/.config/zsh/plugins/nix-zsh-completions" $fpath)
 fi
 
-
-fpath=($HOME/.config/zsh/completions/_exercism $fpath)
+[[ -d "$HOME/.config/zsh/completions" ]] && fpath=("$HOME/.config/zsh/completions" $fpath)
 autoload -Uz compinit && compinit -C
 
 # Define key bindings.
@@ -136,12 +136,19 @@ compdef _directories md
 [[ -z $z4h_win_home ]] || hash -d w=$z4h_win_home
 
 # Define aliases.
-# OS-aware Home Manager / Nix-Darwin Switch Shortcut
+# OS-aware Home Manager / Nix-Darwin Switch Shortcut.
+# Override the detected host with NIX_HOST=<name>.
 hms() {
+  local flake_host
   if [[ "$OSTYPE" == "darwin"* ]]; then
-    sudo darwin-rebuild switch --flake "$HOME/.config/nix-config#$(scutil --get LocalHostName 2>/dev/null || hostname -s)" "$@"
+    flake_host="${NIX_HOST:-$(scutil --get LocalHostName 2>/dev/null || hostname -s)}"
+    sudo darwin-rebuild switch --flake "$HOME/.config/nix-config#$flake_host" "$@"
   else
-    home-manager switch --flake "$HOME/.config/nix-config#shivraj@garuda" -b backup "$@"
+    flake_host="${NIX_HOST:-$(hostname -s)}"
+    case "$flake_host" in
+      hades) flake_host="Hades" ;;
+    esac
+    home-manager switch --flake "$HOME/.config/nix-config#shivraj@$flake_host" -b backup "$@"
   fi
 }
 
@@ -154,13 +161,8 @@ setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 export MANPAGER='nvim +Man!'
 
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+# THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-[[ -e "/home/shivraj/lib/oci_autocomplete.sh" ]] && source "/home/shivraj/lib/oci_autocomplete.sh"
-
-
-# Added by Antigravity CLI installer
-export PATH="/home/shivraj/.local/bin:$PATH"
+[[ -e "$HOME/lib/oci_autocomplete.sh" ]] && source "$HOME/lib/oci_autocomplete.sh"

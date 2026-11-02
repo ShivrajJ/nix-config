@@ -1,8 +1,10 @@
 # Nix Configuration
 
-Cross-platform declarative system and user configuration for:
-- **Garuda Linux** (Arch-based) on Main PC (`shivraj@garuda`)
-- **macOS** (Apple Silicon) on Work Laptop (`shivraj@work-mac`)
+Cross-platform declarative user configuration for:
+
+- **Garuda Linux** (Arch-based) on the main PC (`shivraj@garuda`)
+- **CachyOS Linux** (Arch-based) on `Hades` (`shivraj@Hades`)
+- **macOS** (Apple Silicon) on the work laptop (`Shivrajs-MacBook-Air`, alias `macbook`)
 
 ---
 
@@ -10,19 +12,58 @@ Cross-platform declarative system and user configuration for:
 
 ```text
 .
-├── flake.nix              # Entry point defining Nix configurations
+├── flake.nix              # Entry point defining all configurations
 ├── modules/
-│   ├── common.nix         # Shared cross-platform CLI & GUI packages
-│   └── claude.nix         # Claude Code CLI configuration
+│   ├── common.nix         # Cross-platform CLI & GUI packages
+│   ├── dev.nix            # Developer runtimes, build tools, cloud CLIs
+│   ├── linux.nix          # Linux-only packages (Noctalia, socat, mpvpaper)
+│   └── claude.nix         # Claude Code environment variables
 ├── hosts/
+│   ├── linux.nix          # Shared Linux Home Manager configuration
 │   ├── garuda/
-│   │   └── home.nix       # Linux Home Manager configuration
+│   │   ├── home.nix       # Garuda-specific overrides
+│   │   └── hypr-host.lua  # Garuda monitors, GPU env, input devices
+│   ├── Hades/
+│   │   ├── home.nix       # Hades-specific overrides
+│   │   └── hypr-host.lua  # Hades monitor setup (HDMI)
 │   └── macos/
 │       ├── darwin.nix     # nix-darwin system module
 │       └── home.nix       # macOS Home Manager configuration
-├── config/                # Direct live config directories (hypr, nvim, ghostty, etc.)
+├── config/                # Live-linked config directories (hypr, nvim, ghostty, etc.)
 └── home_files/            # Dotfiles linked to ~ (.zshrc, .p10k.zsh, .gitconfig, etc.)
 ```
+
+The Linux hosts share `hosts/linux.nix`; only genuinely machine-specific
+settings (Hyprland monitors, GPU selection, input devices, extra packages) live
+in each host directory.
+
+### Per-host Hyprland settings
+
+Each host's `home.nix` installs its own `hypr-host.lua` as
+`~/.config/hypr-host.lua`. The shared `config/hypr/hyprland.lua` loads that file
+near the top, before it defines programs and environment variables:
+
+```lua
+local hostConfig = loadfile(os.getenv("HOME") .. "/.config/hypr-host.lua")
+if hostConfig then
+	pcall(hostConfig)
+end
+```
+
+Because the flake output is per host, Garuda gets `hosts/garuda/hypr-host.lua`
+and Hades gets `hosts/Hades/hypr-host.lua`. The file is a read-only Nix store
+copy, so changes require `hms`; the shared `config/hypr` tree stays live-linked
+and editable.
+
+- **Garuda:** internal `eDP-1` panel and `AQ_DRM_DEVICES` selecting the AMD iGPU
+  (which owns the panel) before the NVIDIA dGPU.
+- **Hades:** external `HDMI-A-2` at 4K/120 with scale 2. It has two GPUs
+  (Ryzen 7 9800X3D iGPU + RX 9070 XT), so set `AQ_DRM_DEVICES` to put whichever
+  GPU owns the monitor first. If the monitor is plugged into the RX 9070 XT,
+  that is the dGPU; the iGPU can stay second or be omitted.
+
+Input devices are defined once in the shared `hyprland.lua` because the same
+mouse and pen are used on both machines.
 
 ---
 
@@ -34,29 +75,54 @@ Use the unified OS-aware shortcut in your shell:
 hms
 ```
 
+`hms` detects the current host and selects the matching flake output. Override
+the detection with `NIX_HOST=<name>`.
+
 Or run manually:
 
-* **Linux (Garuda):**
+- **Garuda:**
   ```bash
   home-manager switch --flake "$HOME/.config/nix-config#shivraj@garuda"
   ```
-* **macOS:**
+- **Hades:**
   ```bash
-  sudo darwin-rebuild switch --flake "$HOME/.config/nix-config#shivraj@work-mac"
+  home-manager switch --flake "$HOME/.config/nix-config#shivraj@Hades"
   ```
+- **macOS:**
+  ```bash
+  sudo darwin-rebuild switch --flake "$HOME/.config/nix-config#macbook"
+  ```
+
+---
+
+## Live Config Links
+
+`config/` and `home_files/` are linked with `mkOutOfStoreSymlink`, so edits made
+in the repo (or by the running app) apply immediately and remain writable.
+`~/.zshrc`, `~/.gitconfig`, etc. are therefore editable in place.
+
+Noctalia writes its own state into `config/noctalia/config.toml` at runtime.
+Volatile per-machine state (last wallpaper, per-monitor overrides, lockscreen
+widget layout) is intentionally not committed; expect `git diff` churn after
+changing wallpapers or widgets from the GUI.
 
 ---
 
 ## Non-NixOS Linux Setup (Important)
 
-When bootstrapping this configuration on a non-NixOS Linux distribution (like Arch / Garuda), Home Manager manages desktop integration and GPU driver access via `targets.genericLinux`.
+When bootstrapping this configuration on a non-NixOS Linux distribution (like
+Arch / Garuda), Home Manager manages desktop integration and GPU driver access
+via `targets.genericLinux`.
 
-### 1. GPU Acceleration Setup (One-Time Setup)
-Nix GUI applications (e.g., Ghostty, WezTerm, Obsidian) look for OpenGL and Vulkan drivers in `/run/opengl-driver/lib`.
+### GPU Acceleration Setup (One-Time Setup)
+
+Nix GUI applications (e.g., Ghostty, Obsidian) look for OpenGL and Vulkan
+drivers in `/run/opengl-driver/lib`.
 
 To link your host graphics drivers (NVIDIA / AMD / Intel) to this path:
 
-1. Run `hms` (or `home-manager switch`). Home Manager will output the path to the `non-nixos-gpu-setup` script.
+1. Run `hms` (or `home-manager switch`). Home Manager will output the path to
+   the `non-nixos-gpu-setup` script.
 2. Run the generated script with `sudo`:
    ```bash
    sudo /nix/store/*non-nixos-gpu*/bin/non-nixos-gpu-setup
@@ -64,5 +130,5 @@ To link your host graphics drivers (NVIDIA / AMD / Intel) to this path:
 
 **What this does:**
 - Creates `/run/opengl-driver` pointing to host GPU libraries.
-- Installs `/etc/tmpfiles.d/non-nixos-gpu.conf` so the link automatically persists across reboots.
-- Allows all Nix GUI applications to use hardware GPU acceleration natively with zero custom wrappers.
+- Installs `/etc/tmpfiles.d/non-nixos-gpu.conf` so the link persists across reboots.
+- Allows Nix GUI applications to use hardware GPU acceleration natively.

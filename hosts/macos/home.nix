@@ -1,33 +1,47 @@
-{ pkgs, ... }:
+{ config, ... }:
 
+let
+  repo = "${config.home.homeDirectory}/.config/nix-config";
+
+  # Live, writable link into the checked-out repo (edits apply immediately).
+  live = path: config.lib.file.mkOutOfStoreSymlink "${repo}/${path}";
+in
 {
   home.username = "shivraj";
   home.homeDirectory = "/Users/shivraj";
   home.stateVersion = "24.05";
 
+  home.sessionVariables = {
+    TERMINAL = "ghostty";
+    EDITOR = "nvim";
+    VISUAL = "nvim";
+  };
+
   imports = [
     ../../modules/common.nix
+    ../../modules/dev.nix
     ../../modules/claude.nix
   ];
 
-  # Link root home directory dotfiles (~/.p10k.zsh, ~/.zshrc, ~/.zshenv, etc.)
+  # Root dotfiles are live links so they stay editable.
   home.file = {
-    ".p10k.zsh".source = ../../home_files/p10k.zsh;
-    ".zshrc".source = ../../home_files/zshrc;
-    ".zshenv".source = ../../home_files/zshenv;
-    ".bashrc".source = ../../home_files/bashrc;
-    ".gitconfig".source = ../../home_files/gitconfig;
+    ".p10k.zsh".source = live "home_files/p10k.zsh";
+    ".zshrc".source = live "home_files/zshrc";
+    ".zshenv".source = live "home_files/zshenv";
+    ".bashrc".source = live "home_files/bashrc";
+    ".bash_profile".source = live "home_files/bash_profile";
+    ".gitconfig".source = live "home_files/gitconfig";
   };
 
-  # Symlink shared raw configuration folders to ~/.config/ on macOS
+  # Live, writable links to the repo's shared config directories.
   xdg.configFile = {
-    "nvim".source = ../../config/nvim;
-    "kitty".source = ../../config/kitty;
-    "wezterm".source = ../../config/wezterm;
-    "ghostty".source = ../../config/ghostty;
-    "zellij".source = ../../config/zellij;
-    "btop".source = ../../config/btop;
-    "zsh".source = ../../config/zsh;
+    "nvim".source = live "config/nvim";
+    "kitty".source = live "config/kitty";
+    "ghostty".source = live "config/ghostty";
+    "zellij".source = live "config/zellij";
+    "btop".source = live "config/btop";
+    "zsh".source = live "config/zsh";
+    "fastfetch".source = live "config/fastfetch";
   };
 
   programs.home-manager.enable = true;
