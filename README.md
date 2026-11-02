@@ -16,7 +16,7 @@ Cross-platform declarative user configuration for:
 ├── modules/
 │   ├── common.nix         # Cross-platform CLI & GUI packages
 │   ├── dev.nix            # Developer runtimes, build tools, cloud CLIs
-│   ├── linux.nix          # Linux-only packages (Noctalia, socat, mpvpaper)
+│   ├── linux.nix          # Linux-only packages (Noctalia, mpvpaper, playerctl, brightnessctl, socat)
 │   └── claude.nix         # Claude Code environment variables
 ├── hosts/
 │   ├── linux.nix          # Shared Linux Home Manager configuration
@@ -105,6 +105,18 @@ Noctalia writes its own state into `config/noctalia/config.toml` at runtime.
 Volatile per-machine state (last wallpaper, per-monitor overrides, lockscreen
 widget layout) is intentionally not committed; expect `git diff` churn after
 changing wallpapers or widgets from the GUI.
+
+---
+
+## Development
+
+`nix develop` provides `nixfmt`, `statix`, and `deadnix`. `nix flake check` runs
+the formatting check; `statix` and `deadnix` are available for manual linting.
+
+Some binaries used by the Hyprland config are intentionally host-provided
+rather than Nix packages: `firefox`, `dolphin`, `kdeconnect-indicator`, and
+`wpctl` (PipeWire). Install them on the host or replace the corresponding
+bind/autostart entry.
 
 ---
 

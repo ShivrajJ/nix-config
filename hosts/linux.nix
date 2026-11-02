@@ -75,6 +75,7 @@ in
     "noctalia".source = live "config/noctalia";
     "fastfetch".source = live "config/fastfetch";
     "zsh/plugins".source = live "config/zsh/plugins";
+    "zsh/completions".source = live "config/zsh/completions";
   };
 
   programs.home-manager.enable = true;

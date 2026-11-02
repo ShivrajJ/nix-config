@@ -87,19 +87,9 @@ hl.env("HYPRCURSOR_SIZE", 21)
 -- Firefox Settings
 hl.env("MOZ_DISABLE_RDD_SANDBOX", 1)
 
--- NVIDIA Settings
-hl.env("LIBVA_DRIVER_NAME", "nvidia")
--- hl.env("GBM_BACKEND", "nvidia-drm")
-hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
 hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
 
--- Steam Settings
-hl.env("STEAM_FORCE_DESKTOPUI_SCALING", 1.25)
-
--- Toolkit-specific Scale
-hl.env("GDK_SCALE", 1.25)
-hl.env("QT_SCALE_FACTOR", 1.25)
-hl.env("QT_AUTO_SCREEN_SCALE_FACTOR", 1.25)
+-- Toolkit scaling is host-specific (see hypr-host.lua).
 
 --####################
 --## LOOK AND FEEL ###
@@ -109,8 +99,8 @@ hl.env("QT_AUTO_SCREEN_SCALE_FACTOR", 1.25)
 
 hl.config({
 	general = {
-		gaps_in = 2,
-		gaps_out = 2,
+		gaps_in = 5,
+		gaps_out = 10,
 		border_size = 1,
 		-- https://wiki.hyprland.org/Configuring/Variables/#variable-types for info about colors
 		-- Set to true enable resizing windows by clicking and dragging on borders and gaps
@@ -129,7 +119,8 @@ hl.config({
 
 hl.config({
 	decoration = {
-		rounding = 10,
+		rounding = 20,
+		rounding_power = 2,
 		-- Change transparency of focused and unfocused windows
 		active_opacity = 1.0,
 		inactive_opacity = 0.85,
@@ -138,12 +129,12 @@ hl.config({
 			enabled = true,
 			range = 4,
 			render_power = 3,
-			color = "rgba(1a1a1aee)",
+			color = "0xee1a1a1a",
 		},
 		-- https://wiki.hyprland.org/Configuring/Variables/#blur
 		blur = {
 			enabled = true,
-			size = 8,
+			size = 3,
 			passes = 2,
 			vibrancy = 0.1696,
 			ignore_opacity = true,

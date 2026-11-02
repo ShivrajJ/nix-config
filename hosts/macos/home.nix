@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
   repo = "${config.home.homeDirectory}/.config/nix-config";
@@ -16,6 +16,9 @@ in
     EDITOR = "nvim";
     VISUAL = "nvim";
   };
+
+  # Syncthing is a background service on Linux; macOS only needs the binary.
+  home.packages = [ pkgs.syncthing ];
 
   imports = [
     ../../modules/common.nix

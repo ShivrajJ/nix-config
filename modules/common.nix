@@ -23,7 +23,6 @@ in
     neovim
     shellcheck
     shfmt
-    syncthing
     watchman
     zellij
 

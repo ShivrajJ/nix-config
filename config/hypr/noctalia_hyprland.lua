@@ -6,33 +6,14 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("noctalia")
 end)
 
--- 2. Look & Feel
-hl.config({
-	general = {
-		gaps_in = 5,
-		gaps_out = 10,
-	},
-	decoration = {
-		rounding = 20,
-		rounding_power = 2,
-		shadow = {
-			enabled = true,
-			range = 4,
-			render_power = 3,
-			color = "0xee1a1a1a",
-		},
-		blur = {
-			enabled = true,
-			size = 3,
-			passes = 2,
-			vibrancy = 0.1696,
-		},
-	},
-})
-
--- 3. Core Binds & Media Keys
+-- 2. Core Binds & Media Keys
 local mainMod = "SUPER"
 local ipc = "noctalia msg "
+
+-- Try Noctalia first; fall back to the native tools if the shell is not ready.
+local function with_fallback(primary, backup)
+	return primary .. " 2>/dev/null || " .. backup
+end
 
 -- Core Binds
 hl.bind("ALT + Space", hl.dsp.exec_cmd(ipc .. "panel-toggle launcher"))
@@ -43,13 +24,41 @@ hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd(ipc .. "screenshot-region"))
 hl.bind(mainMod .. " + V", hl.dsp.exec_cmd(ipc .. "panel-toggle clipboard"))
 
 -- Media & Brightness Keys
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd(ipc .. "volume-up"), { locked = true })
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd(ipc .. "volume-down"), { locked = true })
-hl.bind("XF86AudioMute", hl.dsp.exec_cmd(ipc .. "volume-mute"), { locked = true })
-hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd(ipc .. "brightness-up"), { locked = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(ipc .. "brightness-down"), { locked = true })
+hl.bind(
+	"XF86AudioRaiseVolume",
+	hl.dsp.exec_cmd(with_fallback(ipc .. "volume-up", "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+")),
+	{ locked = true }
+)
+hl.bind(
+	"XF86AudioLowerVolume",
+	hl.dsp.exec_cmd(with_fallback(ipc .. "volume-down", "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-")),
+	{ locked = true }
+)
+hl.bind(
+	"XF86AudioMute",
+	hl.dsp.exec_cmd(with_fallback(ipc .. "volume-mute", "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")),
+	{ locked = true }
+)
+hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), {
+	locked = true,
+})
+hl.bind(
+	"XF86MonBrightnessUp",
+	hl.dsp.exec_cmd(with_fallback(ipc .. "brightness-up", "brightnessctl set 5%+")),
+	{ locked = true }
+)
+hl.bind(
+	"XF86MonBrightnessDown",
+	hl.dsp.exec_cmd(with_fallback(ipc .. "brightness-down", "brightnessctl set 5%-")),
+	{ locked = true }
+)
 
--- 4. Window Rules
+-- Media transport keys (Noctalia does not handle these; playerctl does).
+hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
+hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
+hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
+
+-- 3. Window Rules
 hl.window_rule({
 	name = "noctalia_settings",
 	match = { class = "dev.noctalia.Noctalia" },
@@ -68,4 +77,4 @@ hl.layer_rule({
 	blur_popups = true,
 })
 
--- 5. Dynamic theme colors are applied at the end of hyprland.lua.
+-- 4. Dynamic theme colors are applied at the end of hyprland.lua.

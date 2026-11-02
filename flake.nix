@@ -51,6 +51,62 @@
         modules = [ ./hosts/Hades/home.nix ];
       };
 
+      devShells = {
+        x86_64-linux.default =
+          let
+            pkgs = nixpkgs.legacyPackages."x86_64-linux";
+          in
+          pkgs.mkShell {
+            packages = with pkgs; [
+              deadnix
+              nixfmt
+              statix
+            ];
+          };
+
+        aarch64-darwin.default =
+          let
+            pkgs = nixpkgs.legacyPackages."aarch64-darwin";
+          in
+          pkgs.mkShell {
+            packages = with pkgs; [
+              deadnix
+              nixfmt
+              statix
+            ];
+          };
+      };
+
+      checks = {
+        x86_64-linux.formatting =
+          let
+            pkgs = nixpkgs.legacyPackages."x86_64-linux";
+          in
+          pkgs.runCommand "check-formatting"
+            {
+              nativeBuildInputs = [ pkgs.nixfmt ];
+            }
+            ''
+              cd ${self}
+              nixfmt --check $(find . -name '*.nix' -not -path './.git/*')
+              touch $out
+            '';
+
+        aarch64-darwin.formatting =
+          let
+            pkgs = nixpkgs.legacyPackages."aarch64-darwin";
+          in
+          pkgs.runCommand "check-formatting"
+            {
+              nativeBuildInputs = [ pkgs.nixfmt ];
+            }
+            ''
+              cd ${self}
+              nixfmt --check $(find . -name '*.nix' -not -path './.git/*')
+              touch $out
+            '';
+      };
+
       formatter = {
         x86_64-linux = nixpkgs.legacyPackages."x86_64-linux".nixfmt;
         aarch64-darwin = nixpkgs.legacyPackages."aarch64-darwin".nixfmt;
