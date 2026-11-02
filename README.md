@@ -126,6 +126,10 @@ rather than Nix packages: `firefox`, `dolphin`, `kdeconnect-indicator`, and
 `wpctl` (PipeWire). Install them on the host or replace the corresponding
 bind/autostart entry.
 
+The C toolchain (`gcc`) is also intentionally host-provided. Installing `gcc`
+through Nix interfered with building AUR packages on Garuda, so native builds
+use the host toolchain.
+
 ---
 
 ## Non-NixOS Linux Setup (Important)
