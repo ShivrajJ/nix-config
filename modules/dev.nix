@@ -13,7 +13,6 @@
     # Developer Runtimes & Build Tools
     nodejs
     uv
-    python311
     go
     maven
     gradle
